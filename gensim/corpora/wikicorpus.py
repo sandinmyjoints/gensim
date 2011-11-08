@@ -124,8 +124,8 @@ def tokenize(content):
     Tokenize a piece of text from wikipedia. The input string `content` is assumed
     to be mark-up free (see `filter_wiki()`).
 
-    Return list of tokens as utf8 bytestrings. Ignore words shorted than 2 or longer
-    that 15 characters (not bytes!).
+    Return list of tokens as utf8 bytestrings. Ignore words shorter than 2 or longer
+    than 15 characters (not bytes!).
     """
     # TODO maybe ignore tokens with non-latin characters? (no chinese, arabic, russian etc.)
     return [token.encode('utf8') for token in utils.tokenize(content, lower=True, errors='ignore')
