@@ -40,6 +40,8 @@ The transformations are standard Python objects, typically initialized by means 
 a :dfn:`training corpus`:
 
 >>> tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
+>>> print tfidf
+TfidfModel(num_docs=9, num_nnz=28)
 
 We used our old corpus from tutorial 1 to initialize (train) the transformation model. Different
 transformations may require different initialization parameters; in case of TfIdf, the
@@ -67,6 +69,9 @@ any vector from the old representation (bag-of-words integer counts) to the new 
 
 >>> doc_bow = [(0, 1), (1, 1)]
 >>> print tfidf[doc_bow] # step 2 -- use the model to transform vectors
+<gensim.interfaces.TransformedCorpus object at 0x2163cd0>
+>>> for doc in tfidf[bow_bow]: # tfidf transformations are done on-the-fly; see note below.
+>>>     print doc
 [(0, 0.70710678), (1, 0.70710678)]
 
 Or to apply a transformation to a whole corpus:

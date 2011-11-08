@@ -136,10 +136,14 @@ Instead, let's assume the documents are stored in a file on disk, one document p
 only requires that a corpus must be able to return one document vector at a time::
 
 >>> class MyCorpus(object):
+>>>     def __init__(self, dictionary):
+>>>         super(MyCorpus, self).__init__()
+>>>         self.dictionary = dictionary # pass in a dictionary to use for returning document vectors
+>>>
 >>>     def __iter__(self):
 >>>         for line in open('mycorpus.txt'):
 >>>             # assume there's one document per line, tokens separated by whitespace
->>>             yield dictionary.doc2bow(line.lower().split())
+>>>             yield self.dictionary.doc2bow(line.lower().split())
 
 Download the sample `mycorpus.txt file here <./mycorpus.txt>`_. The assumption that
 each document occupies one line in a single file is not important; you can mold
