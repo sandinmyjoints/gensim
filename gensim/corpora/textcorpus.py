@@ -41,15 +41,20 @@ def getstream(input):
     """
     If input is a filename (string), return `open(input)`.
     If input is a file-like object, reset it to the beginning with `input.seek(0)`.
+    If input is a list, tuple, or anything else, simply return it.
     """
     assert input is not None
     if isinstance(input, basestring):
         # input was a filename: open as text file
         result = open(input)
+
     else:
-        # input was a file-like object (BZ2, Gzip etc.); reset the stream to its beginning
         result = input
-        result.seek(0)
+        
+        # if input is a file-like object (BZ2, Gzip etc.), reset the stream to its beginning
+        if hasattr(result, "seek"):
+            result.seek(0)
+
     return result
 
 
@@ -61,9 +66,9 @@ class TextCorpus(interfaces.CorpusABC):
     This is an abstract base class: override the `get_texts()` method to match
     your particular input.
 
-    Given a filename (or a file-like object) in constructor, the corpus object
-    will be automatically initialized with a dictionary in `self.dictionary` and
-    will support the `iter` corpus method. You must only provide a correct `get_texts`
+    Given a filename, a file-like object, or even a list or tuple in constructor, the
+    corpus object will be automatically initialized with a dictionary in `self.dictionary`
+    and will support the `iter` corpus method. You must only provide a correct `get_texts`
     implementation.
 
     """
