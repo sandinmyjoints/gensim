@@ -69,9 +69,6 @@ any vector from the old representation (bag-of-words integer counts) to the new 
 
 >>> doc_bow = [(0, 1), (1, 1)]
 >>> print tfidf[doc_bow] # step 2 -- use the model to transform vectors
-<gensim.interfaces.TransformedCorpus object at 0x2163cd0>
->>> for doc in tfidf[bow_bow]: # tfidf transformations are done on-the-fly; see note below.
->>>     print doc
 [(0, 0.70710678), (1, 0.70710678)]
 
 Or to apply a transformation to a whole corpus:
