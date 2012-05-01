@@ -72,15 +72,20 @@ class TextCorpus(interfaces.CorpusABC):
     implementation.
 
     """
-    def __init__(self, input=None):
+    def __init__(self, input=None, word2id=None):
         super(TextCorpus, self).__init__()
         self.input = input
-        self.dictionary = Dictionary()
-        if input is not None:
-            self.dictionary.add_documents(self.get_texts())
+        if word2id:
+            self.dictionary = word2id
+            # Force initialization
+            _ = [d for d in self]
         else:
-            logger.warning("No input document stream provided; assuming "
-                           "dictionary will be initialized some other way.")
+            self.dictionary = Dictionary()
+            if input is not None:
+                self.dictionary.add_documents(self.get_texts())
+#        else:
+#            logger.warning("No input document stream provided; assuming "
+#                           "dictionary will be initialized some other way.")
 
 
     def __iter__(self):
