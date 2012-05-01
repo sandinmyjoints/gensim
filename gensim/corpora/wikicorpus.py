@@ -49,7 +49,7 @@ logger = logging.getLogger('gensim.corpora.wikicorpus')
 
 # Wiki is first scanned for all distinct word types (~7M). The types that appear
 # in more than 10% of articles are removed and from the rest, the DEFAULT_DICT_SIZE
-# most frequent types are kept (default 100K).
+# most frequent types are kept (default 50K).
 DEFAULT_DICT_SIZE = 50000
 
 # Ignore articles shorter than ARTICLE_MIN_CHARS characters (after preprocessing).
@@ -151,16 +151,17 @@ class WikiCorpus(TextCorpus):
     >>> wiki.saveAsText('wiki_en_vocab200k') # another 8h, creates a file in MatrixMarket format plus file with id->word
 
     """
-    def __init__(self, fname, no_below=20, keep_words=DEFAULT_DICT_SIZE, dictionary=None):
+    def __init__(self, fname, no_below=20, no_above=0.1, keep_words=DEFAULT_DICT_SIZE, dictionary=None):
         """
         Initialize the corpus. This scans the corpus once, to determine its
         vocabulary (only the first `keep_words` most frequent words that
-        appear in at least `noBelow` documents are kept).
+        appear in at least `no_below` documents and not more than
+        `no_above` of the total number of documents are kept).
         """
         self.fname = fname
         if dictionary is None:
             self.dictionary = Dictionary(self.get_texts())
-            self.dictionary.filter_extremes(no_below=no_below, no_above=0.1, keep_n=keep_words)
+            self.dictionary.filter_extremes(no_below=no_below, no_above=no_above, keep_n=keep_words)
         else:
             self.dictionary = dictionary
 
@@ -288,7 +289,7 @@ if __name__ == '__main__':
     else:
         keep_words = DEFAULT_DICT_SIZE
 
-    # build dictionary. only keep 100k most frequent words (out of total ~8.2m unique tokens)
+    # build dictionary. only keep keep_words most frequent words (out of total ~8.2m unique tokens)
     # takes about 9h on a macbook pro, for 3.5m articles (june 2011 wiki dump)
     wiki = WikiCorpus(input, keep_words=keep_words)
     # save dictionary and bag-of-words (term-document frequency matrix)

@@ -135,7 +135,7 @@ class Similarity(interfaces.SimilarityABC):
         the `add_documents` method. Documents are split into shards of `shardsize`
         documents each, converted to a matrix (for fast BLAS calls) and stored to disk
         under `output_prefix.shard_number` (=you need write access to that location).
-        If you don't specify an output prefix, a random filename in temp will be used.
+        If you set output_prefix to None, a random filename in temp will be used.
 
         `shardsize` should be chosen so that a `shardsize x chunksize` matrix of floats
         fits comfortably into main memory.
@@ -165,7 +165,7 @@ class Similarity(interfaces.SimilarityABC):
 
         """
         if output_prefix is None:
-            # undocumented feature: set output_prefix=None to create the server in temp
+            # set output_prefix=None to create the server in temp
             self.output_prefix = utils.randfname(prefix='simserver')
         else:
             self.output_prefix = output_prefix
